@@ -1,7 +1,9 @@
 #include "Sphere.hpp"
 
+Sphere::Sphere() : Surface(20, 20) { radius = 1.0f; }
+
 Sphere::Sphere(unsigned int N, unsigned int M) : Surface(N, M) {
-	radius = 0.8f;
+	radius = 1.0f;
 	center = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
@@ -14,11 +16,4 @@ void Sphere::eval(float x, float y, glm::vec3& pos, glm::vec3& norm) {
 	pos.z = radius * cosf(u) + center.z;
 
 	norm = glm::normalize(pos - center);
-}
-
-void Sphere::setUniformMaterial(const GpuProgram& program) const {
-	program.setVec3("material.ambient", material.ambient);
-	program.setVec3("material.diffuse", material.diffuse);
-	program.setVec3("material.specular", material.specular);
-	program.setFloat("material.shininess", material.shininess);
 }

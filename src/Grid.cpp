@@ -1,6 +1,8 @@
 #include "Grid.hpp"
 
-Grid::Grid() {}
+Grid::Grid() { N = 6; }
+
+Grid::Grid(unsigned int _N) { N = _N; }
 
 void Grid::create() {
 	std::vector<glm::vec3> axisX;
@@ -47,5 +49,10 @@ void Grid::create() {
 void Grid::draw() const {
 	vertexArray.bind();
 	vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
+
+	shader->bind();
+	setModelUniforms(*shader);
+	setUniformMaterial(*shader);
+
 	glDrawArrays(GL_LINES, 0, numberOfPoints);
 }

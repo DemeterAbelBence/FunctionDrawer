@@ -13,12 +13,10 @@ class Surface : public Object {
 private:
 	unsigned int verticesPerStrip;
 	unsigned int strips;
-	glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
 	float scale;
 
 public:
 	Surface(unsigned int N, unsigned int M);
-	inline void setCenter(glm::vec3 value) { center = value; }
 	inline void setScale(float value) { scale = value; }
 	VertexData generateVertexData(float x, float y);
 
