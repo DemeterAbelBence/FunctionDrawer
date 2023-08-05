@@ -67,8 +67,8 @@ void Surface::draw() const {
 	vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
 
 	shader->bind();
-	setModelUniforms(*shader);
-	setUniformMaterial(*shader);
+	setModelUniforms();
+	setUniformMaterial();
 
 	for (unsigned int i = 0; i < 4 * strips; i++) 
 		glDrawArrays(GL_TRIANGLE_STRIP, i * verticesPerStrip, verticesPerStrip);

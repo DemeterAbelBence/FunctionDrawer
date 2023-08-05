@@ -15,13 +15,13 @@ protected:
 
 	GpuProgram* shader;
 
+	Lighting::Material material;
+
 	glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 translation;
 	glm::vec3 scale;
 	glm::vec3 rotationAxis;
 	float rotationAngle;
-
-	Lighting::Material material;
 
 public:
 	Object();
@@ -34,15 +34,15 @@ public:
 	inline void setMaterial(const Lighting::Material& _material) { material = _material; }
 	inline void setCenter(glm::vec3 value) { center = value; }
 
-	inline void translateX(float speed) { translation.x += speed; }
-	inline void translateY(float speed) { translation.y += speed; }
-	inline void translateZ(float speed) { translation.z += speed; }
+	virtual inline void translateX(float speed) { translation.x += speed; }
+	virtual inline void translateY(float speed) { translation.y += speed; }
+	virtual inline void translateZ(float speed) { translation.z += speed; }
 
 	void rotate(float degrees);
 	glm::mat4 makeModelMatrix() const;
 	glm::mat4 makeModelInverseMatrix() const;
-	void setModelUniforms(const GpuProgram& program) const;
-	void setUniformMaterial(const GpuProgram& program) const;
+	void setModelUniforms() const;
+	void setUniformMaterial() const;
 
 	virtual void create() = 0;
 	virtual void draw() const = 0;

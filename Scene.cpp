@@ -3,12 +3,6 @@
 Scene::Scene() {
 	center = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	light = {
-		glm::vec3(0.0f, 2.0f, 0.0f),
-		glm::vec3(1.0f, 1.0f, 0.0f),
-		glm::vec3(0.4f, 0.4f, 0.4f)
-	};
-
 	camera.createViewMatrix();
 
 	gridShader = new GpuProgram();
@@ -16,8 +10,8 @@ Scene::Scene() {
 	gridShader->readVertexSource("src/shaders/gridVertex.shader");
 
 	surfaceShader = new GpuProgram();
-	surfaceShader->readFragmentSource("src/shaders/fragment1.shader");
-	surfaceShader->readVertexSource("src/shaders/vertex1.shader");
+	surfaceShader->readFragmentSource("src/shaders/functionFragment.shader");
+	surfaceShader->readVertexSource("src/shaders/functionVertex.shader");
 }
 
 void Scene::create() {
@@ -27,14 +21,14 @@ void Scene::create() {
 		glm::vec3(0.5f, 0.5f, 0.5f),
 		glm::vec3(1.0f, 1.0f, 1.0f),
 		glm::vec3(0.2f, 0.2f, 0.2f),
-		1.5f
+		5.0f
 	};
 
 	Lighting::Material material2 = {
 		glm::vec3(0.5f, 0.5f, 0.5f),
-		glm::vec3(0.7f, 0.7f, 0.0f),
+		glm::vec3(0.7f, 0.0f, 0.0f),
 		glm::vec3(0.2f, 0.2f, 0.2f),
-		1.5f
+		1.0f
 	};
 
 	gridShader->createProgram();
@@ -44,11 +38,8 @@ void Scene::create() {
 	surfaceShader->createProgram();
 	surfaceShader->bind();
 	camera.setUniforms(*surfaceShader);
-	surfaceShader->setVec3("light.position", light.position);
-	surfaceShader->setVec3("light.diffuse", light.diffuse);
-	surfaceShader->setVec3("light.ambient", light.ambient);
 
-	Grid* grid = new Grid();
+	Grid* grid = new Grid(6);
 	grid->setShader(gridShader);
 	grid->setScale(scale);
 	grid->setCenter(center);
@@ -62,11 +53,10 @@ void Scene::create() {
 	function->setCenter(center + glm::vec3(offset, 0.0f, offset));
 	function->create();
 
-	Sphere* sun = new Sphere(20, 20);
+	sun = new Sun(20, 20, glm::vec3(0.0f, 2.0f, 0.0f));
 	sun->setMaterial(material1);
 	sun->setShader(surfaceShader);
 	sun->setScale(1.0f);
-	sun->setCenter(light.position);
 	sun->setRadius(0.2f);
 	sun->create();
 
@@ -76,6 +66,7 @@ void Scene::create() {
 }
 
 void Scene::draw() const {
+	sun->setUniformLight();
 	for (const auto& object : objects)
 		object->draw();
 }
@@ -110,7 +101,7 @@ void Scene::update(GLFWwindow* window) {
 		transformation = &Object::translateZ; sign = -1;
 	}
 
-	if (sign != 0) {
+	if (sign != 0) { 
 		if (objectIndex == 3) {
 			for (const auto& object : objects)
 				(object->*transformation)((float)moveSpeed * sign);

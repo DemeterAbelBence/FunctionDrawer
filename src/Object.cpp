@@ -39,16 +39,16 @@ glm::mat4 Object::makeModelInverseMatrix() const {
 	return t * r * s;
 }
 
-void Object::setModelUniforms(const GpuProgram& program) const {
-	program.setMat4("M", makeModelMatrix());
-	program.setMat4("Minv", makeModelInverseMatrix());
+void Object::setModelUniforms() const {
+	shader->setMat4("M", makeModelMatrix());
+	shader->setMat4("Minv", makeModelInverseMatrix());
 }
 
-void Object::setUniformMaterial(const GpuProgram& program) const {
-	program.setVec3("material.ambient", material.ambient);
-	program.setVec3("material.diffuse", material.diffuse);
-	program.setVec3("material.specular", material.specular);
-	program.setFloat("material.shininess", material.shininess);
+void Object::setUniformMaterial() const {
+	shader->setVec3("material.ambient", material.ambient);
+	shader->setVec3("material.diffuse", material.diffuse);
+	shader->setVec3("material.specular", material.specular);
+	shader->setFloat("material.shininess", material.shininess);
 }
 
 Object::~Object() { delete shader; }

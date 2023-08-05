@@ -9,6 +9,6 @@ Function::Function(unsigned int N, unsigned int M) : Surface(N, M) {}
 void Function::eval(float x, float y, glm::vec3& pos, glm::vec3& norm) {
 	float z = x * x + y * y;
 	pos = glm::vec3(x, z, y);
-	norm = glm::vec3(-2.0f * x, 2.0f * y, 1.0f);
+	norm = glm::vec3(-2.0f * x, 1.0f, 2.0f * y);
 }
 

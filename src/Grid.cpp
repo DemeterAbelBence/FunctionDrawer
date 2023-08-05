@@ -51,8 +51,8 @@ void Grid::draw() const {
 	vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
 
 	shader->bind();
-	setModelUniforms(*shader);
-	setUniformMaterial(*shader);
+	setModelUniforms();
+	setUniformMaterial();
 
 	glDrawArrays(GL_LINES, 0, numberOfPoints);
 }
