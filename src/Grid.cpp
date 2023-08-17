@@ -15,7 +15,6 @@ void Grid::create() {
 		axisZ.push_back(glm::vec3(center.x, center.y, center.z + scale * (float)i / N));
 	}
 
-	std::vector<glm::vec3> gridPoints;
 	for (int i = 0; i < axisX.size(); ++i) {
 		glm::vec3 ax = axisX[i];
 		glm::vec3 ay = axisY[i];
@@ -41,9 +40,7 @@ void Grid::create() {
 	}
 
 	numberOfPoints = gridPoints.size();
-	vertexBuffer.setData((const void*)&gridPoints[0], numberOfPoints * sizeof(glm::vec3));
-	vertexBufferLayout.push(GL_FLOAT, 3);
-	vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
+	setBufferData((const void*)&gridPoints[0], numberOfPoints * sizeof(glm::vec3));
 }
 
 void Grid::draw() const {
@@ -51,8 +48,27 @@ void Grid::draw() const {
 	vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
 
 	shader->bind();
-	setModelUniforms();
-	setUniformMaterial();
+	setAllUniforms();
 
 	glDrawArrays(GL_LINES, 0, numberOfPoints);
+}
+
+void Grid::reCreate() {
+	unsigned int size = gridPoints.size();
+	for (int i = 0; i < size; ++i) {
+		glm::vec4 p = glm::vec4(gridPoints[i], 1.0f) * makeModelMatrix();
+		gridPoints[i] = glm::vec3(p);
+	}
+	setBufferData((const void*)&gridPoints[0], size * sizeof(glm::vec3));
+	resetTransormations();
+}
+
+void Grid::setBufferData(const void* data, unsigned int size) {
+	vertexBuffer.setData(data, size);
+
+	if (!getCeated()) {
+		vertexBufferLayout.push(GL_FLOAT, 3);
+		vertexArray.addBuffer(vertexBuffer, vertexBufferLayout);
+		setCreated(true);
+	}
 }

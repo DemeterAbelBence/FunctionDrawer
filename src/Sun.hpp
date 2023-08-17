@@ -10,9 +10,14 @@ private:
 public:
 	Sun(glm::vec3 _center);
 	Sun(unsigned int N, unsigned int M, glm::vec3 _center);
-	virtual inline void translateX(float speed) override;
-	virtual inline void translateY(float speed) override;
-	virtual inline void translateZ(float speed) override;
 
-	void setUniformLight() const;
+	inline void translateX(float speed) override;
+	inline void translateY(float speed) override;
+	inline void translateZ(float speed) override;
+	void rotate(float degrees) override;
+
+	void setUniformLight(const GpuProgram& progarm) const;
+
+private:
+	void rotateLight();
 };

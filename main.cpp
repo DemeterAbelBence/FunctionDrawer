@@ -4,16 +4,18 @@
 
 int main(void)
 {
+    GLFWwindow* window = nullptr;
     try {
-        GLFWwindow* window = Application::initGlfwWindow("FunctionDrawer");
+        window = Application::initGlfwWindow("FunctionDrawer");
         Application::initOpenGl();
         Application::initImgui(window);
-
-        Application::drawLoop(window);
     }
     catch (const char* exception) {
         std::cout << exception << std::endl;
+        return 0;
     }
+
+    Application::renderLoop(window);
 
     return 0;
 }

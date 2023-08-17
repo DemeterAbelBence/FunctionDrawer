@@ -1,17 +1,20 @@
 #include "Scene.hpp"
 
 Scene::Scene() {
-	center = glm::vec3(0.0f, 0.0f, 0.0f);
-
+	center = glm::vec3(-1.0f, -1.0f, 1.0f);
 	camera.createViewMatrix();
 
 	gridShader = new GpuProgram();
 	gridShader->readFragmentSource("src/shaders/gridFragment.shader");
 	gridShader->readVertexSource("src/shaders/gridVertex.shader");
 
-	surfaceShader = new GpuProgram();
-	surfaceShader->readFragmentSource("src/shaders/functionFragment.shader");
-	surfaceShader->readVertexSource("src/shaders/functionVertex.shader");
+	functionShader = new GpuProgram();
+	functionShader->readFragmentSource("src/shaders/functionFragment.shader");
+	functionShader->readVertexSource("src/shaders/functionVertex.shader");
+
+	sunShader = new GpuProgram();
+	sunShader->readFragmentSource("src/shaders/sunFragment.shader");
+	sunShader->readVertexSource("src/shaders/sunVertex.shader");
 }
 
 void Scene::create() {
@@ -32,12 +35,13 @@ void Scene::create() {
 	};
 
 	gridShader->createProgram();
-	gridShader->bind();
 	camera.setUniforms(*gridShader);
 
-	surfaceShader->createProgram();
-	surfaceShader->bind();
-	camera.setUniforms(*surfaceShader);
+	functionShader->createProgram();
+	camera.setUniforms(*functionShader);
+
+	sunShader->createProgram();
+	camera.setUniforms(*sunShader);
 
 	Grid* grid = new Grid(6);
 	grid->setShader(gridShader);
@@ -45,19 +49,19 @@ void Scene::create() {
 	grid->setCenter(center);
 	grid->create();
 
-	Function* function = new Function(20, 20);
+	Function* function = new Function(30, 30);
 	function->setMaterial(material2);
-	function->setShader(surfaceShader);
-	function->setScale(1.0f);
+	function->setShader(functionShader);
+	function->setScale(2.0f);
 	float offset = scale / 2.0f;
 	function->setCenter(center + glm::vec3(offset, 0.0f, offset));
 	function->create();
 
-	sun = new Sun(20, 20, glm::vec3(0.0f, 2.0f, 0.0f));
+	sun = new Sun(20, 20, center + glm::vec3(1.5f, 1.0f, 0.0f));
 	sun->setMaterial(material1);
-	sun->setShader(surfaceShader);
+	sun->setShader(sunShader);
 	sun->setScale(1.0f);
-	sun->setRadius(0.2f);
+	sun->setRadius(0.1f);
 	sun->create();
 
 	objects.push_back(sun);
@@ -66,46 +70,78 @@ void Scene::create() {
 }
 
 void Scene::draw() const {
-	sun->setUniformLight();
+	sun->setUniformLight(*functionShader);
+	camera.setUniforms(*functionShader);
+	camera.setUniforms(*gridShader);
+	camera.setUniforms(*sunShader);
+
 	for (const auto& object : objects)
 		object->draw();
 }
 
 void Scene::update(GLFWwindow* window) {
-	float rotateSpeed = 2.0f;
-	float moveSpeed = 0.05f;
+	float speed = 0.05f;
 	int sign = 0;
-	void(Object::*transformation)(float) = nullptr;
+	bool recreate = false;
+	void(Transformable::*transformation)(float) = nullptr;
 
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		transformation = &Object::translateX; sign = -1;
-	}
+	static glfw::Key keyDown(GLFW_KEY_DOWN);
+	static glfw::Key keyUp(GLFW_KEY_UP);
+	static glfw::Key keyLeft(GLFW_KEY_LEFT);
+	static glfw::Key keyRight(GLFW_KEY_RIGHT);
+	static glfw::Key keyW(GLFW_KEY_W);
+	static glfw::Key keyS(GLFW_KEY_S);
+	static glfw::Key keyA(GLFW_KEY_A);
+	static glfw::Key keyD(GLFW_KEY_D);
 
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		transformation = &Object::translateX; sign = 1;
-	}
+	if (keyDown.isPressed(window)) {
+		transformation = &Transformable::translateY; sign = -1;
+	}else if (keyDown.isReleased(window)) { recreate = true; }
 
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		transformation = &Object::translateY; sign = 1;
-	}
+	if (keyUp.isPressed(window)) {
+		transformation = &Transformable::translateY; sign = 1;
+	}else if (keyUp.isReleased(window)) { recreate = true; }
 
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		transformation = &Object::translateY; sign = -1;
-	}
+	if (keyRight.isPressed(window)) {
+		transformation = &Transformable::translateX; sign = 1;
+	}else if (keyRight.isReleased(window)) { recreate = true; }
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		transformation = &Object::translateZ; sign = 1;
-	}
+	if (keyLeft.isPressed(window)) {
+		transformation = &Transformable::translateX; sign = -1;
+	}else if (keyLeft.isReleased(window)) { recreate = true; }
 
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		transformation = &Object::translateZ; sign = -1;
-	}
+	if (keyW.isPressed(window)) {
+		transformation = &Transformable::translateZ; sign = 1;
+	}else if (keyW.isReleased(window)) { recreate = true; }
+
+	if (keyS.isPressed(window)) {
+		transformation = &Transformable::translateZ; sign = -1;
+	}else if (keyS.isReleased(window)) { recreate = true; }
+
+	if (keyA.isPressed(window)) {
+		transformation = &Transformable::rotate; sign = -1; speed = 0.5f;
+	}else if (keyA.isReleased(window)) { recreate = true; }
+	
+	if (keyD.isPressed(window)) {
+		transformation = &Transformable::rotate; sign = 1; speed = 0.5f;
+	}else if (keyD.isReleased(window)) { recreate = true; }
 
 	if (sign != 0) { 
 		if (objectIndex == 3) {
 			for (const auto& object : objects)
-				(object->*transformation)((float)moveSpeed * sign);
+				(object->*transformation)((float)speed * sign);
 		}
-		else (objects[objectIndex]->*transformation)((float)moveSpeed * sign);
+		else (objects[objectIndex]->*transformation)((float)speed * sign);
 	}
+
+	if (recreate) {
+		for (const auto& object : objects)
+			object->reCreate();
+	}
+}
+
+Scene::~Scene() {
+	delete gridShader;
+	delete functionShader;
+	delete sunShader;
 }

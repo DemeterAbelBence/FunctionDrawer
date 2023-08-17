@@ -15,6 +15,8 @@ private:
 	unsigned int strips;
 	float scale;
 
+	std::vector<VertexData> vertexData;
+
 public:
 	Surface(unsigned int N, unsigned int M);
 	inline void setScale(float value) { scale = value; }
@@ -22,6 +24,10 @@ public:
 
 	void create() override;
 	void draw() const override;
+	void reCreate() override;
 
 	virtual void eval(float x, float y, glm::vec3& pos, glm::vec3& norm) = 0;
+
+private:
+	void setBufferData(const void* data, unsigned int size);
 };

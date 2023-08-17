@@ -6,6 +6,7 @@
 #include "src/lighting/Lighting.hpp"
 #include "src/Camera.hpp"
 #include "src/Sun.hpp"
+#include "src/glfw/glfw.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -19,7 +20,8 @@ private:
 	glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	GpuProgram* gridShader;
-	GpuProgram* surfaceShader;
+	GpuProgram* functionShader;
+	GpuProgram* sunShader;
 
 	unsigned int objectIndex = 3;
 
@@ -29,4 +31,5 @@ public:
 	void create();
 	void draw() const;
 	void update(GLFWwindow* window);
+	~Scene();	
 };

@@ -2,9 +2,9 @@
 
 precision highp float;
 
-in vec3 radiance;
 out vec4 fragmentColor;
+in vec3 color;
 
 void main() {
-	fragmentColor = vec4(1, 1, 1, 1);
+	fragmentColor = vec4(color, 1);
 }

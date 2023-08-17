@@ -25,5 +25,6 @@ public:
 	inline glm::mat4 getView() const { return view; }
 
 	void createViewMatrix();
+	void update();
 	void setUniforms(const GpuProgram& program) const;
 };

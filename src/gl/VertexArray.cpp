@@ -8,6 +8,7 @@ VertexArray::VertexArray() {
 }
 
 void VertexArray::addBuffer(const VertexBuffer& vertexBuffer, const VertexBufferLayout& layout) const{
+	bind();
 	vertexBuffer.bind();
 	const auto& elements = layout.getElements();
 	int offset = 0;

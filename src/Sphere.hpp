@@ -5,7 +5,6 @@
 class Sphere : public Surface {
 
 private:
-	glm::vec3 center;
 	float radius;
 
 public:

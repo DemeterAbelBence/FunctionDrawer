@@ -48,6 +48,7 @@ void GpuProgram::createProgram() {
 	unsigned int id = glCreateProgram();
 	unsigned int vertexId = compileShader(GL_VERTEX_SHADER, vertexSource);
 	unsigned int fragmentId = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
+	std::cout << std::endl;
 
 	glAttachShader(id, vertexId);
 	glAttachShader(id, fragmentId);

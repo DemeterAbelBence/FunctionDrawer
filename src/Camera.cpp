@@ -1,8 +1,8 @@
 #include "Camera.hpp"
 
 Camera::Camera() {
-	eye = glm::vec3(0.0f, 0.0f, 0.5f);
-    target = glm::vec3(0.0f, 0.0f, 0.0f);
+	eye = glm::vec3(0.0f, 0.0f, -1.0f);
+    target = glm::vec3(0.0f, 0.0f, 1.0f);
     up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     float nearZ = 0.1f;
@@ -23,7 +23,7 @@ Camera::Camera() {
 }
 
 void Camera::createViewMatrix() {
-    glm::vec3 D = glm::normalize(eye - target);
+    glm::vec3 D = glm::normalize(target - eye);
     glm::vec3 R = glm::normalize(glm::cross(up, D));
     glm::vec3 U = glm::normalize(glm::cross(D, R));
 
@@ -42,7 +42,19 @@ void Camera::createViewMatrix() {
     view = rotation * translation;
 }
 
+void Camera::update() {
+    static float i = 0;
+    float r = 2.0f;
+
+    eye.x = target.x + r * glm::sin(i * 3.14157f);
+    eye.y = target.y + r * glm::cos(i * 3.14157f);
+    i++;
+
+    createViewMatrix();
+}
+
 void Camera::setUniforms(const GpuProgram& program) const {
+    program.bind();
     program.setMat4("P", projection);
     program.setMat4("V", view);
     program.setVec3("eye", eye);
