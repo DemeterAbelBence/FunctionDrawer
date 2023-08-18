@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Object.hpp"
 
 class Grid : public Object{

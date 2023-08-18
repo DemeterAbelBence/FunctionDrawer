@@ -30,4 +30,12 @@ public:
 	glm::mat4 makeModelInverseMatrix() const;
 	void setModelUniforms(const GpuProgram& program) const;
 	void resetTransormations();
+
+	glm::mat4 makeTranslationMatrix() const;
+	glm::mat4 makeScaleMatrix() const;
+	glm::mat4 makeRotationMatrix() const;
+
+	glm::mat4 makeTranslationInverseMatrix() const;
+	glm::mat4 makeScaleInverseMatrix() const;
+	glm::mat4 makeRotationInverseMatrix() const;
 };

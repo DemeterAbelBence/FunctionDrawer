@@ -54,16 +54,15 @@ void Application::renderLoop(GLFWwindow* window) {
     const float frameTime = (float)1000 / FPS;
     while (!glfwWindowShouldClose(window)) {
         previousTime = currentTime;
-
-        //draw elements
         glViewport(0, 0, sceneWidth, sceneHeight);
         glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
+
         scene.update(window);
         scene.draw();
 
-        drawUserInteface(scene);
+        Gui::drawUserInteface(scene, sceneWidth, windowWidth, windowHeight);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -74,41 +73,5 @@ void Application::renderLoop(GLFWwindow* window) {
     }
 
     glfwTerminate();
-}
-
-void Application::drawRectangle(glm::vec3 color) {
-    static Rect rectangle(glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, 1.0f), color);
-    rectangle.draw();
-}
-
-void Application::drawUserInteface(Scene& scene) {
-    glViewport(sceneWidth, 0, windowWidth - sceneWidth, windowHeight);
-    drawRectangle(glm::vec3(0.2f, 0.2f, 0.3f));
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    const char* items[] = { "lightsource", "function", "grid", "everything"};
-    static int currentItem;
-    ImGui::SetNextWindowSize(ImVec2(300, 120));
-    ImGui::SetNextWindowPos(ImVec2(850, 50), ImGuiCond_Always);
-    ImGui::Begin("Select object");
-    ImGui::ListBox("Objects", &currentItem, items, IM_ARRAYSIZE(items));
-    ImGui::End();
-    scene.setObjectIndex(currentItem);
-
-    ImGui::SetNextWindowSize(ImVec2(300, 120));
-    ImGui::SetNextWindowPos(ImVec2(850, 250), ImGuiCond_Always);
-    ImGui::Begin("Hello, worl2!");
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(300, 120));
-    ImGui::SetNextWindowPos(ImVec2(850, 450), ImGuiCond_Always);
-    ImGui::Begin("Hello, worl3!");
-    ImGui::End();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "src/gl/GpuProgram.hpp"
 #include "src/gl/VertexArray.hpp"
 #include "src/Object.hpp"
@@ -15,6 +17,7 @@ class Scene {
 private:
 	std::vector<Object*> objects;
 	Sun* sun;
+	Function* function;
 	Camera camera;
 
 	glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -27,9 +30,15 @@ private:
 
 public:
 	Scene();
+
 	inline void setObjectIndex(unsigned int value) { objectIndex = value; }
+	inline void setFunctionMaterial(const Lighting::Material _material) { function->setMaterial(_material); }
+	inline void setLightAmbient(glm::vec3 ambient) { sun->setLightAmbient(ambient); }
+	inline void setLightDiffuse(glm::vec3 diffuse) { sun->setLightAmbient(diffuse); }
+
 	void create();
 	void draw() const;
 	void update(GLFWwindow* window);
+
 	~Scene();	
 };

@@ -1,12 +1,11 @@
 #include "src/gl/Util.hpp"
-#include "src/gl/GpuProgram.hpp"
-#include "src/Rect.hpp"
 
 #include "dep/imgui/imgui.h"
 #include "dep/imgui/imgui_impl_glfw.h"
 #include "dep/imgui/imgui_impl_opengl3.h"
 
 #include "Scene.hpp"
+#include "Gui.hpp"
 
 #include <iostream>
 #include <Windows.h>
@@ -24,7 +23,4 @@ namespace Application {
 	void initOpenGl();
 	void initImgui(GLFWwindow* window);
 	void renderLoop(GLFWwindow* window);
-
-	void drawRectangle(glm::vec3 color);
-	void drawUserInteface(Scene& scene);
 }

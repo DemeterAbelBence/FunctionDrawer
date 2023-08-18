@@ -51,13 +51,6 @@ void Sun::setUniformLight(const GpuProgram& progarm) const {
 }
 
 void Sun::rotateLight() {
-	glm::mat4 r;
-	float a = rotationAngle * 3.14152f / 180.0f;
-	r[0] = glm::vec4(cosf(a), 0.0f, -sinf(a), 0.0f);
-	r[1] = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
-	r[2] = glm::vec4(sinf(a), 0.0f, cosf(a), 0.0f);
-	r[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	glm::vec4 newLightPosition = r * glm::vec4(light.position, 1.0f);
+	glm::vec4 newLightPosition = makeRotationMatrix() * glm::vec4(light.position, 1.0f);
 	light.position = glm::vec3(newLightPosition);
 }

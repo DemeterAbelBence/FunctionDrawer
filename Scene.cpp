@@ -49,7 +49,7 @@ void Scene::create() {
 	grid->setCenter(center);
 	grid->create();
 
-	Function* function = new Function(30, 30);
+	function = new Function(30, 30);
 	function->setMaterial(material2);
 	function->setShader(functionShader);
 	function->setScale(2.0f);
@@ -126,7 +126,7 @@ void Scene::update(GLFWwindow* window) {
 		transformation = &Transformable::rotate; sign = 1; speed = 0.5f;
 	}else if (keyD.isReleased(window)) { recreate = true; }
 
-	if (sign != 0) { 
+	if (transformation != nullptr) {
 		if (objectIndex == 3) {
 			for (const auto& object : objects)
 				(object->*transformation)((float)speed * sign);
