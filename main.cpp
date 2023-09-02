@@ -2,8 +2,7 @@
 
 #include "Application.hpp"
 
-int main(void)
-{
+int main(void) {
     GLFWwindow* window = nullptr;
     try {
         window = Application::initGlfwWindow("FunctionDrawer");

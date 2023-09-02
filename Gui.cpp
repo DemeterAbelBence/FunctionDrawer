@@ -43,6 +43,7 @@ void Gui::drawLightPicker(Scene& scene) {
 void Gui::drawListBox(Scene& scene) {
     const char* items[] = { "lightsource", "function", "grid", "everything" };
     static int currentItem;
+
     ImGui::SetNextWindowSize(ImVec2(300, 120));
     ImGui::SetNextWindowPos(ImVec2(850, 50), ImGuiCond_Always);
     ImGui::Begin("Select object");
@@ -56,18 +57,33 @@ void Gui::drawRectangle(glm::vec3 color) {
     rectangle.draw();
 }
 
+void Gui::drawFunctionPicker(Scene& scene) {
+    static char positionBuffer[50];
+    static char normalBuffer[50];
+
+    ImGui::SetNextWindowSize(ImVec2(300, 120));
+    ImGui::SetNextWindowPos(ImVec2(850, 500), ImGuiCond_Always);
+    ImGui::Begin("Function formula");
+    ImGui::InputText("position", positionBuffer, sizeof(positionBuffer));
+    //ImGui::InputText("normal", normalBuffer, sizeof(normalBuffer));
+
+    if (ImGui::Button("calculate")) {
+        scene.reevaluateFunction(positionBuffer, normalBuffer);
+    }
+
+    ImGui::End();
+}
+
 void Gui::drawUserInteface(Scene& scene, int sceneWidth, int windowWidth, int windowHeight) {
     glViewport(sceneWidth, 0, windowWidth - sceneWidth, windowHeight);
     drawRectangle(glm::vec3(0.2f, 0.2f, 0.3f));
 
-    ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui::NewFrame();  
 
     drawListBox(scene);
     drawMaterialPicker(scene);
     drawLightPicker(scene);
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    drawFunctionPicker(scene);
 }

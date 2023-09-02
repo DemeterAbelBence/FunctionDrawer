@@ -20,6 +20,8 @@ private:
 public:
 	Surface(unsigned int N, unsigned int M);
 	inline void setScale(float value) { scale = value; }
+	inline void deleteData() { vertexData.clear(); }
+
 	VertexData generateVertexData(float x, float y);
 
 	void create() override;

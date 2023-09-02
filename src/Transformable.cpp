@@ -66,7 +66,7 @@ glm::mat4 Transformable::makeScaleMatrix() const {
 
 glm::mat4 Transformable::makeRotationMatrix() const {
 	glm::mat4 r;
-	float a = rotationAngle * 3.14152f / 180.0f;
+	float a = rotationAngle / 180;
 	r[0] = glm::vec4(cosf(a), 0.0f, -sinf(a), 0.0f);
 	r[1] = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
 	r[2] = glm::vec4(sinf(a), 0.0f, cosf(a), 0.0f);

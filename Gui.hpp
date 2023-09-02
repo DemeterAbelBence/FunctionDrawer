@@ -17,6 +17,7 @@ namespace Gui {
 	void drawLightPicker(Scene& scene);
 	void drawListBox(Scene& scene);
 	void drawRectangle(glm::vec3 color);
+	void drawFunctionPicker(Scene& scene);
 
 	void drawUserInteface(Scene& scene, int sceneWidth, int windowWidth, int windowHeight);
 }

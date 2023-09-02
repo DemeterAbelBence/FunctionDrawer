@@ -27,14 +27,18 @@ private:
 	GpuProgram* sunShader;
 
 	unsigned int objectIndex = 3;
+	unsigned int shaderIndex = 0;
 
 public:
 	Scene();
 
 	inline void setObjectIndex(unsigned int value) { objectIndex = value; }
+	inline void setShaderIndex(unsigned int value) { shaderIndex = value; }
 	inline void setFunctionMaterial(const Lighting::Material _material) { function->setMaterial(_material); }
 	inline void setLightAmbient(glm::vec3 ambient) { sun->setLightAmbient(ambient); }
-	inline void setLightDiffuse(glm::vec3 diffuse) { sun->setLightAmbient(diffuse); }
+	inline void setLightDiffuse(glm::vec3 diffuse) { sun->setLightDiffuse(diffuse); }
+
+	void reevaluateFunction(const char* positionString, const char* normalString);
 
 	void create();
 	void draw() const;

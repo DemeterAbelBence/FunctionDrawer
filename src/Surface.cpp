@@ -32,7 +32,6 @@ void Surface::create() {
 			vertexData.push_back(generateVertexData(scale * (float)j / M, scale * (float)(i + 1) / N));
 		}
 	}
-
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j <= M; j++) {
 			vertexData.push_back(generateVertexData(-scale * (float)j / M, -scale * (float)i / N));
@@ -46,7 +45,7 @@ void Surface::create() {
 			vertexData.push_back(generateVertexData(scale * (float)j / M, -scale * (float)(i + 1) / N));
 		}
 	}
-
+	
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j <= M; j++) {
 			vertexData.push_back(generateVertexData(-scale * (float)j / M, scale * (float)i / N));

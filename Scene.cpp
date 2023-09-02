@@ -17,6 +17,14 @@ Scene::Scene() {
 	sunShader->readVertexSource("src/shaders/sunVertex.shader");
 }
 
+void Scene::reevaluateFunction(const char* positionString, const char* normalString) {
+	function->setNormalFormula(normalString);
+	function->setPositionFormula(positionString);
+
+	function->deleteData();
+	function->create();
+}
+
 void Scene::create() {
 	float scale = 3.0f;
 

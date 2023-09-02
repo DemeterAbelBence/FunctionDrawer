@@ -6,7 +6,7 @@ Camera::Camera() {
     up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     float nearZ = 0.1f;
-    float farZ = 10.0f;
+    float farZ = 8.0f;
     float zRange = nearZ - farZ;
     float A = (-farZ - nearZ) / zRange;
     float B = 2.0f * farZ * nearZ / zRange;

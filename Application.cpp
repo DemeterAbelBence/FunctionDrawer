@@ -33,6 +33,7 @@ void Application::initImgui(GLFWwindow* window) {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.WantCaptureKeyboard = false;
 
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsLight();
@@ -50,10 +51,11 @@ void Application::renderLoop(GLFWwindow* window) {
     float currentTime = 0;
     float previousTime = 0;
     float deltaTime = 0;
-    const int FPS = 100;
+    const int FPS = 250;
     const float frameTime = (float)1000 / FPS;
     while (!glfwWindowShouldClose(window)) {
         previousTime = currentTime;
+        glfwPollEvents();
         glViewport(0, 0, sceneWidth, sceneHeight);
         glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -61,11 +63,13 @@ void Application::renderLoop(GLFWwindow* window) {
 
         scene.update(window);
         scene.draw();
-
-        Gui::drawUserInteface(scene, sceneWidth, windowWidth, windowHeight);
         
+        Gui::drawUserInteface(scene, sceneWidth, windowWidth, windowHeight);
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
-        glfwPollEvents();
+
         currentTime = glfwGetTime();
         deltaTime = (currentTime - previousTime);
         if (frameTime - deltaTime > 0)

@@ -2,7 +2,7 @@
 
 precision highp float;		
 
-struct LightSource{
+struct LightSource {
 	vec3 position;
 	vec3 ambient;
 	vec3 diffuse;
@@ -46,8 +46,10 @@ void main() {
 	radiance = material.ambient * light.ambient;
 	float lightCos = max(dot(N, L), 0);
 	float viewCos = max(dot(N, H), 0);
-	radiance += (material.diffuse * lightCos +
-		material.specular * pow(viewCos, material.shininess)) * light.diffuse;
+	//radiance += (material.diffuse * lightCos +
+		//material.specular * pow(viewCos, material.shininess)) * light.diffuse;
+
+	radiance += material.diffuse * lightCos + material.specular * pow(viewCos, material.shininess) * light.diffuse;
 
 	//radiance = vertexColor;
 }

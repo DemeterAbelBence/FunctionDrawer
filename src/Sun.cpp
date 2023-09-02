@@ -5,8 +5,8 @@
 Sun::Sun(glm::vec3 _center) : Sphere (20, 20) {
 	light = {
 		_center,
-		glm::vec3(1.0f, 1.0f, 0.0f),
-		glm::vec3(0.4f, 0.4f, 0.4f)
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f)
 	};
 	setCenter(_center);
 }
@@ -14,8 +14,8 @@ Sun::Sun(glm::vec3 _center) : Sphere (20, 20) {
 Sun::Sun(unsigned int N, unsigned int M, glm::vec3 _center) : Sphere(N, M) {
 	light = {
 		_center,
-		glm::vec3(1.0f, 1.0f, 0.0f),
-		glm::vec3(0.4f, 0.4f, 0.4f)
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f)
 	};
 	setCenter(_center);
 }
