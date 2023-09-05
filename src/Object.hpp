@@ -2,7 +2,7 @@
 
 #include "gl/VertexArray.hpp"
 #include "gl/GpuProgram.hpp"
-#include "lighting/Lighting.hpp"
+#include "datatypes/Lighting.hpp"
 #include "Transformable.hpp"
 
 #include <glm.hpp>

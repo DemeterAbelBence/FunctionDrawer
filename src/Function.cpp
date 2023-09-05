@@ -7,11 +7,11 @@ Function::Function() : Surface(20, 20) { positionFormula = "0"; }
 Function::Function(unsigned int N, unsigned int M) : Surface(N, M) { positionFormula = "sin(3.14*x)+cos(3.14*y)"; }
 
 void Function::eval(float x, float y, glm::vec3& pos, glm::vec3& norm) {
-	float z = evaluateFormula(x, y, positionFormula);
-	pos = glm::vec3(x, z, y);
-
-	glm::vec3 n = glm::vec3(3.14 * cosf(3.14 * x), 1.0f, -3.14 * sinf(3.14 * y));
-	norm = glm::normalize(-n);
+	Dnum X = Dnum(x, glm::vec3(1.0f, 0.0f, 0.0f));
+	Dnum Y = Dnum(y, glm::vec3(0.0f, 0.0f, 1.0f));
+	Dnum Z = evaluateFormula(X, Y, positionFormula);
+	pos = glm::vec3(x, Z.val, y);
+	norm = glm::normalize(Z.der);
 }
 
 void Function::trimBrackets(std::string& formula) {
@@ -81,6 +81,15 @@ float Function::toNumber(const std::string& number) {
 	return result;
 }
 
+void Function::removeSpaces(std::string& formula) {
+	std::string result;
+	for (char c : formula) {
+		if (c != ' ')
+			result += c;
+	}
+	formula = result;
+}
+
 std::string Function::trimOperation(std::string& operation) {
 	unsigned int size = operation.size();
 	std::string result;
@@ -108,11 +117,12 @@ std::string Function::rightOperand(unsigned int index, std::string operation) {
 	return result;
 }
 
-float Function::evaluateFormula(float x, float y, std::string formula) {
+Dnum Function::evaluateFormula(Dnum x, Dnum y, std::string formula) {
 	unsigned int bracketCount = 0;
 	std::string operation;
 
 	trimBrackets(formula);
+	removeSpaces(formula);
 
 	if (formula == std::string("x"))
 		return x;
@@ -155,17 +165,22 @@ float Function::evaluateFormula(float x, float y, std::string formula) {
 
 	if (isOperation("sin", formula)) {
 		std::string newFormula = trimOperation(formula);
-		return sinf(evaluateFormula(x, y, newFormula));
+		return _Sin(evaluateFormula(x, y, newFormula));
 	}
 
 	if (isOperation("cos", formula)) {
 		std::string newFormula = trimOperation(formula);
-		return cosf(evaluateFormula(x, y, newFormula));
+		return _Cos(evaluateFormula(x, y, newFormula));
 	}
 
 	if (isOperation("log", formula)) {
 		std::string newFormula = trimOperation(formula);
-		return log(evaluateFormula(x, y, newFormula));
+		return _Log(evaluateFormula(x, y, newFormula));
+	}
+
+	if (isOperation("exp", formula)) {
+		std::string newFormula = trimOperation(formula);
+		return _Exp(evaluateFormula(x, y, newFormula));
 	}
 }
 

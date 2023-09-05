@@ -25,6 +25,9 @@ void Scene::reevaluateFunction(const char* positionString, const char* normalStr
 	function->create();
 }
 
+void Scene::invertFunctionNormal() {
+}
+
 void Scene::create() {
 	float scale = 3.0f;
 

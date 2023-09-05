@@ -1,3 +1,5 @@
+#pragma once
+
 #include "src/gl/Util.hpp"
 #include "src/Rect.hpp"
 

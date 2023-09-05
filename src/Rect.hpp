@@ -1,3 +1,5 @@
+#pragma once
+
 #include "gl/GpuProgram.hpp"
 #include "gl/VertexArray.hpp"
 

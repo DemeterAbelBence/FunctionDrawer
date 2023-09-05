@@ -65,10 +65,13 @@ void Gui::drawFunctionPicker(Scene& scene) {
     ImGui::SetNextWindowPos(ImVec2(850, 500), ImGuiCond_Always);
     ImGui::Begin("Function formula");
     ImGui::InputText("position", positionBuffer, sizeof(positionBuffer));
-    //ImGui::InputText("normal", normalBuffer, sizeof(normalBuffer));
 
     if (ImGui::Button("calculate")) {
         scene.reevaluateFunction(positionBuffer, normalBuffer);
+    }
+
+    if (ImGui::Button("invert normal")) {
+        scene.invertFunctionNormal();
     }
 
     ImGui::End();

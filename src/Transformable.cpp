@@ -9,6 +9,7 @@ Transformable::Transformable() {
 
 void Transformable::rotate(float speed) {
 	rotationAngle += speed * 3.14157f;
+	center = glm::vec3(glm::vec4(center, 1) * makeRotationMatrix());
 
 	/*if (rotationAngle > 2 * 3.14157f)
 		rotationAngle = 0.0f;

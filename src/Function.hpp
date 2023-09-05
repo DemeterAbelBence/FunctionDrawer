@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Surface.hpp"
-#include "lighting/Lighting.hpp"
+#include "datatypes/Lighting.hpp"
+#include "datatypes/Dnum.hpp"
 #include "gl/GpuProgram.hpp"
 
 class Function : public Surface {
@@ -24,9 +25,10 @@ private:
 	bool isNumber(const std::string& formula);
 	float toNumber(const std::string& formula);
 	std::string trimOperation(std::string& operation);
+	void removeSpaces(std::string& formula);
 	std::string leftOperand(unsigned int index, std::string operation);
 	std::string rightOperand(unsigned int index, std::string operation);
 
-	float evaluateFormula(float x, float y, std::string formula);
+	Dnum evaluateFormula(Dnum x, Dnum y, std::string formula);
 	
 };

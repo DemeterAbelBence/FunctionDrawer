@@ -5,7 +5,7 @@
 #include "src/Object.hpp"
 #include "src/Grid.hpp"
 #include "src/Function.hpp"
-#include "src/lighting/Lighting.hpp"
+#include "src/datatypes/Lighting.hpp"
 #include "src/Camera.hpp"
 #include "src/Sun.hpp"
 #include "src/glfw/glfw.hpp"
@@ -39,6 +39,7 @@ public:
 	inline void setLightDiffuse(glm::vec3 diffuse) { sun->setLightDiffuse(diffuse); }
 
 	void reevaluateFunction(const char* positionString, const char* normalString);
+	void invertFunctionNormal();
 
 	void create();
 	void draw() const;

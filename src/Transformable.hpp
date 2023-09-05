@@ -1,3 +1,5 @@
+#pragma once
+
 #include <glm.hpp>
 
 #include "gl/GpuProgram.hpp"
@@ -21,9 +23,9 @@ public:
 	inline void setCenter(glm::vec3 value) { center = value; }
 	inline glm::vec3 getCenter() const { return center; }
 
-	virtual inline void translateX(float speed) { translation.x += speed; }
-	virtual inline void translateY(float speed) { translation.y += speed; }
-	virtual inline void translateZ(float speed) { translation.z += speed; }
+	virtual inline void translateX(float speed) { translation.x += speed; center.x += speed; }
+	virtual inline void translateY(float speed) { translation.y += speed; center.y += speed; }
+	virtual inline void translateZ(float speed) { translation.z += speed; center.z += speed; }
 	virtual void rotate(float speed);
 
 	glm::mat4 makeModelMatrix() const;
