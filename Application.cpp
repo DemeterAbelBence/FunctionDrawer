@@ -2,8 +2,9 @@
 
 GLFWwindow* Application::initGlfwWindow(const char* windowName) {
 
-    if (!glfwInit())
+    if (!glfwInit()) {
         throw "Glfw initialization error!\n";
+	}
 
     GLFWwindow* window;
     window = glfwCreateWindow(windowWidth, windowHeight, windowName, NULL, NULL);
@@ -35,8 +36,8 @@ void Application::initImgui(GLFWwindow* window) {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.WantCaptureKeyboard = false;
 
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
+    //ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true); 
     ImGui_ImplOpenGL3_Init("#version 330 core");
